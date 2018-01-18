@@ -1,0 +1,48 @@
+<?php
+
+/**
+ * @file
+ * Contains sliderfield.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function sliderfield_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the sliderfield module.
+    case 'help.page.sliderfield':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Slider UI field') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function sliderfield_theme() {
+  return [
+    'slider_sliderelement' => [
+      'render element' => 'elements',
+    ],
+  ];
+}
+
+/**
+ * Prepares variables for slider item templates.
+ *
+ * Default template: slider-sliderelement.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - elements: An array of elements to display in view mode.
+ */
+function sliderfield_preprocess_slider_sliderelement(&$variables) {
+  $variables['slider'] = $variables['elements']['slider'];
+}

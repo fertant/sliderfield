@@ -1,0 +1,9 @@
+element.slider:
+  version: 1.0
+  css:
+    theme:
+      assets/css/sliderfield_element_sliderfield.css: {}
+  js:
+    assets/js/sliderfield_element_sliderfield.js: {}
+  dependencies:
+    - core/jquery.ui.slider

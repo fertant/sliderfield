@@ -80,6 +80,7 @@ use Drupal\Component\Utility\NestedArray;
  *   '#display_inputs' => TRUE,
  *   '#display_values' => FALSE,
  *   '#display_values_format' => '%{value}%',
+ *   '#not_selected_text' => 'Not selected'
  *   '#display_bubble' => FALSE,
  *   '#display_bubble_format' => '%{value}%',
  *   '#slider_length' => NULL,
@@ -89,7 +90,6 @@ use Drupal\Component\Utility\NestedArray;
  *   '#group_master' => FALSE,
  *   '#validate_range' => TRUE,
  *   '#fields_to_sync_css_selector' => NULL,
- *   '#display_ignore_button' => FALSE,
  *   '#hide_slider_handle_when_no_value' => FALSE,
  * );
  * @endcode
@@ -123,6 +123,7 @@ class Slider extends FormElement {
       '#display_inputs' => TRUE,
       '#display_values' => FALSE,
       '#display_values_format' => '%{value}%',
+      '#not_selected_text' => 'Not selected',
       '#display_bubble' => FALSE,
       '#display_bubble_format' => '%{value}%',
       '#slider_length' => NULL,
@@ -132,7 +133,6 @@ class Slider extends FormElement {
       '#group_master' => FALSE,
       '#validate_range' => TRUE,
       '#fields_to_sync_css_selector' => NULL,
-      '#display_ignore_button' => FALSE,
       '#hide_slider_handle_when_no_value' => FALSE,
       '#process' => [
         [$class, 'processAjaxForm'],
@@ -212,12 +212,12 @@ class Slider extends FormElement {
     if ($element['#display_inside_fieldset']) {
       $element['slider'] = [
         '#type' => 'fieldset',
-        '#title' => $element['#title']
+        '#title' => $element['#title'],
       ];
     }
     elseif ($element['#title']) {
       $element['slider'] = [
-        '#type' => 'container'
+        '#type' => 'container',
       ];
     }
 
@@ -239,20 +239,6 @@ class Slider extends FormElement {
       if ($element['#group_master']) {
         $group_css .= ' slider-group-master';
       }
-    }
-
-    if ($element['#display_ignore_button'] && !$element['#display_inputs']) {
-      $element['slider']['ignore'] = [
-        '#type' => 'checkbox',
-        '#title' => t('Not Selected (Uncheck to select a value)'),
-        '#value' => (is_null($value) || $value === ''),
-        '#disabled' => $element['#disabled'],
-        '#attributes' => [
-          'class' => [
-            'slider-ignore'
-          ]
-        ]
-      ];
     }
 
     $_attributes_new = [
@@ -290,7 +276,7 @@ class Slider extends FormElement {
         $value = NULL;
         $ajax['trigger_as'] = array(
           'name' => $element['#name'],
-          'value' => $value
+          'value' => $value,
         );
       }
       if (!isset($ajax['event'])) {
@@ -310,7 +296,7 @@ class Slider extends FormElement {
         $values[$key] = str_replace('%{value}%', $value ,$element['#display_values_format']);
       }
       $element['slider']['values_text'] = [
-        '#markup' => '<div class="sliderfield-display-values-field">' . htmlentities(implode(' - ',  $values)) . '</div>'
+        '#markup' => '<div class="sliderfield-display-values-field">' . htmlentities(implode(' - ',  $values)) . '</div>',
       ];
     }
 
@@ -326,7 +312,7 @@ class Slider extends FormElement {
     if ($element['#hide_slider_handle_when_no_value']) {
       $element['slider']['note'] = array(
         '#type' => 'markup',
-        '#markup' => '<div class="sliderfield-selectvalue-description">' . t('Please click on any part of the slider to select a value') . '</div>'
+        '#markup' => '<div class="sliderfield-selectvalue-description">' . t('Please click on any part of the slider to select a value') . '</div>',
       );
     }
 
@@ -336,13 +322,13 @@ class Slider extends FormElement {
       '#attributes' => [
         'class' => [
           'sliderfield-container',
-          $element['#slider_style']
+          $element['#slider_style'],
         ],
-        'style' => $style
+        'style' => $style,
       ],
       '#attached' => [
         'library' => [
-          'sliderfield/element.slider'
+          'sliderfield/element.slider',
         ],
         'drupalSettings' => [
           'sliderfield_' . $element['#id'] => [
@@ -357,6 +343,7 @@ class Slider extends FormElement {
             'step' => $element['#step'] * 1,
             'display_inputs' => $element['#display_inputs'],
             'display_values_format' => $element['#display_values_format'],
+            'not_selected_text' => $element['#not_selected_text'],
             'display_bubble' => $element['#display_bubble'],
             'display_bubble_format' => $element['#display_bubble_format'],
             'display_values' => $element['#display_values'],
@@ -364,13 +351,12 @@ class Slider extends FormElement {
             'group_type' => $element['#group_type'],
             'group_master' => $element['#group_master'],
             'fields_to_sync_css_selector' => $element['#fields_to_sync_css_selector'],
-            'display_ignore_button' => $element['#display_ignore_button'],
-            'hide_slider_handle_when_no_value' => $element['#hide_slider_handle_when_no_value']
+            'hide_slider_handle_when_no_value' => $element['#hide_slider_handle_when_no_value'],
           ]
         ]
       ],
       '#markup' => '',
-      '#suffix' => '</div>'
+      '#suffix' => '</div>',
     ];
 
     $element['#process_called'] = TRUE;

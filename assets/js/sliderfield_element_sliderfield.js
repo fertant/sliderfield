@@ -58,25 +58,25 @@
             // See https://bugs.webkit.org/show_bug.cgi?id=23789
           }
         });
-        if (setting.display_ignore_button) {
-          $slider.parent().find('.sliderfield-ignore').change(function() {
-            var $slider = $(this).parent().parent().find('.sliderfield, .webform-sliderfield');
-            var $slider_container = $slider.find('.sliderfield-container');
-            $slider_id = $slider.attr('id');
-            var setting = drupalSettings['sliderfield_' + $slider_id];
-            if ($(this).is(':checked')) {
-              $(this).parent().parent().find('.sliderfield-value-field').val('');
-              $(this).parent().parent().find('.sliderfield-value2-field').val('');
-              if (setting.fields_to_sync_css_selector) {
-                $(setting.fields_to_sync_css_selector).val('');
-              }
-              $slider_container.slider( "disable" );
-            } else {
-              $slider_container.slider( "enable" );
-            }
-          });
-        }
-        if (setting.disabled || ($value == '' && setting.display_ignore_button)) {
+        // if (setting.display_ignore_button) {
+        //   $slider.parent().find('.sliderfield-ignore').change(function() {
+        //     var $slider = $(this).parent().parent().find('.sliderfield, .webform-sliderfield');
+        //     var $slider_container = $slider.find('.sliderfield-container');
+        //     $slider_id = $slider.attr('id');
+        //     var setting = drupalSettings['sliderfield_' + $slider_id];
+        //     if ($(this).is(':checked')) {
+        //       $(this).parent().parent().find('.sliderfield-value-field').val('');
+        //       $(this).parent().parent().find('.sliderfield-value2-field').val('');
+        //       if (setting.fields_to_sync_css_selector) {
+        //         $(setting.fields_to_sync_css_selector).val('');
+        //       }
+        //       $slider_container.slider( "disable" );
+        //     } else {
+        //       $slider_container.slider( "enable" );
+        //     }
+        //   });
+        // }
+        if (setting.disabled) {
           $(this).slider( "disable" );
         }
 
@@ -161,9 +161,9 @@
               // Move slider without toggling events
               $SliderField.slider({value: $value});
 
-              if (!setting.disabled && setting.display_ignore_button) {
-                $SliderField.slider( "enable" );
-              }
+              // if (!setting.disabled && setting.display_ignore_button) {
+              //   $SliderField.slider( "enable" );
+              // }
             }
           });
 
@@ -202,9 +202,9 @@
               // Move slider without toggling events
               $SliderField.slider('values', 1, $value);
 
-              if (!setting.disabled && setting.display_ignore_button) {
-                $SliderField.slider( "enable" );
-              }
+              // if (!setting.disabled && setting.display_ignore_button) {
+              //   $SliderField.slider( "enable" );
+              // }
             }
           });
     }
@@ -249,9 +249,24 @@
         }
         $('#' + $slider_id + ' .ui-slider-handle:eq(' + i + ') .sliderfield-bubble').html(bubble_value);
       }
-      $values[i] = setting.display_values_format.replace('%{value}%', $values[i]);
+
+      // Update values text
+      if (setting.display_values) {
+        $values[i] = setting.display_values_format.replace('%{value}%', $values[i]);
+      }
     }
-    $slider.find('.sliderfield-display-values-field').html($values.join(' - '));
+
+    var $slider_label =  $slider.find('.sliderfield-display-values-field');
+    if ($values.length > 1) {
+      $slider_label.html($values.join(' - '));
+    } else {
+      if(setting.min == $values[0]) {
+        $slider_label.html(setting.not_selected_text);
+      } else {
+        $slider_label.html($values.join(' - '));
+      }
+    }
+    // $slider.find('.sliderfield-display-values-field').html($values.join(' - '));
   }
 
   var sliderfieldsSlideChange = function(event, ui) {

@@ -38,10 +38,10 @@ class SliderUIFieldWidget extends WidgetBase {
           'display_values_format' => '%{value}%',
           'display_bubble' => FALSE,
           'display_bubble_format' => '%{value}%',
+          'not_selected_text' => t('Not selected'),
           'slider_length' => NULL,
           'hide_inputs' => TRUE,
           'multi_value' => FALSE,
-          'display_ignore_button' => TRUE,
           'hide_slider_handle_when_no_value' => FALSE,
         ]
       ] + parent::defaultSettings();
@@ -59,7 +59,7 @@ class SliderUIFieldWidget extends WidgetBase {
       '#title' => $this->t('Slider Settings'),
       '#collapsible' => TRUE,
       '#collapsed' => FALSE,
-      '#weight' => 0
+      '#weight' => 0,
     );
 
     $elements['sliderfield_settings']['animate'] = [
@@ -72,7 +72,7 @@ class SliderUIFieldWidget extends WidgetBase {
         'slow' => $this->t('Slow'),
         'custom' => $this->t('Custom')
       ],
-      '#default_value' => $settings['sliderfield_settings']['animate']
+      '#default_value' => $settings['sliderfield_settings']['animate'],
     ];
     $elements['sliderfield_settings']['orientation'] = [
       '#type' => 'select',
@@ -83,7 +83,7 @@ class SliderUIFieldWidget extends WidgetBase {
       ],
       '#require' => TRUE,
       '#description' => $this->t('Determines whether the slider handles move horizontally (min on left, max on right) or vertically (min on bottom, max on top).'),
-      '#default_value' => $settings['sliderfield_settings']['orientation']
+      '#default_value' => $settings['sliderfield_settings']['orientation'],
     ];
     $elements['sliderfield_settings']['range'] = [
       '#type' => 'select',
@@ -95,7 +95,7 @@ class SliderUIFieldWidget extends WidgetBase {
         'max' => $this->t('Maximum')
       ],
       '#description' => $this->t('Whether the slider represents a range.'),
-      '#default_value' => $settings['sliderfield_settings']['range']
+      '#default_value' => $settings['sliderfield_settings']['range'],
     ];
     $elements['sliderfield_settings']['step'] = [
       '#type' => 'textfield',
@@ -104,20 +104,20 @@ class SliderUIFieldWidget extends WidgetBase {
       '#description' => $this->t('Determines the size or amount of each interval or step the slider takes between the min and max. The full specified value range of the slider (max - min) should be evenly divisible by the step.'),
       '#required' => TRUE,
       '#element_validate' => [$this, 'sliderfieldValidatePositiveNumber'],
-      '#default_value' => $settings['sliderfield_settings']['step']
+      '#default_value' => $settings['sliderfield_settings']['step'],
     ];
     $elements['sliderfield_settings']['slider_style'] = [
       '#type' => 'select',
       '#title' => $this->t('Style'),
       '#options' => $this->sliderfieldStyles(),
       '#description' => $this->t('Some default color styles for ease of use'),
-      '#default_value' => $settings['sliderfield_settings']['slider_style']
+      '#default_value' => $settings['sliderfield_settings']['slider_style'],
     ];
     $elements['sliderfield_settings']['display_values'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Display Values'),
       '#description' => $this->t('If enabled display the current values of slider as simple text.'),
-      '#default_value' => $settings['sliderfield_settings']['display_values']
+      '#default_value' => $settings['sliderfield_settings']['display_values'],
     ];
     $display_values_format = $settings['sliderfield_settings']['display_values_format'];
     $display_values_format = !isset($display_values_format) ? '%{value}%' : $display_values_format;
@@ -126,7 +126,14 @@ class SliderUIFieldWidget extends WidgetBase {
       '#title' => $this->t('Display Values Format'),
       '#size' => 15,
       '#description' => $this->t('Format of the displaied values, The usage is mostly for showing $,% or other signs near the value. Use %{value}% as slider value'),
-      '#default_value' => $display_values_format
+      '#default_value' => $display_values_format,
+    ];
+    $elements['sliderfield_settings']['not_selected_text'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Not selected text'),
+      '#size' => 25,
+      '#description' => $this->t('Displays this text when the field value is not set'),
+      '#default_value' => $settings['sliderfield_settings']['not_selected_text'],
     ];
     $display_bubble = $settings['sliderfield_settings']['display_bubble'];
     $display_bubble = !isset($display_bubble) ? '%{value}%' : $display_bubble;
@@ -134,7 +141,7 @@ class SliderUIFieldWidget extends WidgetBase {
       '#type' => 'checkbox',
       '#title' => $this->t('Display bubble/hint'),
       '#description' => $this->t('Display a hint/bubble near each slider handle showing the value of that handle.'),
-      '#default_value' => $display_bubble
+      '#default_value' => $display_bubble,
     ];
     $display_bubble_format = $settings['sliderfield_settings']['display_bubble_format'];
     $display_bubble_format = !isset($display_bubble_format) ? '%{value}%' : $display_bubble_format;
@@ -143,20 +150,20 @@ class SliderUIFieldWidget extends WidgetBase {
       '#size' => 15,
       '#title' => $this->t('Display bubble/hint format'),
       '#description' => $this->t('Format of the displaied values in bubble/hint, The usage is mostly for showing $,% or other signs near the value. Use %{value}% as slider value. For range slider it can have two values separated by || like "$%{value}%MIN||$%{value}%MAX"'),
-      '#default_value' => $display_bubble_format
+      '#default_value' => $display_bubble_format,
     ];
     $elements['sliderfield_settings']['slider_length'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Slider Length'),
       '#size' => 5,
       '#description' => $this->t('Acceptable types are the same as css width and height (100px) and it will be used as width or height depending on #orientation'),
-      '#default_value' => $settings['sliderfield_settings']['slider_length']
+      '#default_value' => $settings['sliderfield_settings']['slider_length'],
     ];
     $elements['sliderfield_settings']['hide_inputs'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Hide Input Textfields'),
       '#description' => $this->t('If enabled displays only the slider and hides input textfields.'),
-      '#default_value' => $settings['sliderfield_settings']['hide_inputs']
+      '#default_value' => $settings['sliderfield_settings']['hide_inputs'],
     ];
     $multi_value = $settings['sliderfield_settings']['multi_value'];
     $multi_value = !isset($multi_value) ? '' : $multi_value;
@@ -168,19 +175,13 @@ class SliderUIFieldWidget extends WidgetBase {
         'separate' => $this->t('Enable')
       ],
       '#description' => $this->t('Uses field\'s multi value feature to store the values, currently only 2 values are supported. A separate handle for each value will be shown on slider'),
-      '#default_value' => $multi_value
-    ];
-    $elements['sliderfield_settings']['display_ignore_button'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Display ignore button'),
-      '#description' => $this->t('When field is not required, and hide input fields option is active a checkbox will be shown allowing user to ignore the field allowing user to ignore the field and enter no value.'),
-      '#default_value' => $settings['sliderfield_settings']['display_ignore_button'],
+      '#default_value' => $multi_value,
     ];
     $elements['sliderfield_settings']['hide_slider_handle_when_no_value'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Hide slider handle when there is no value'),
       '#description' => $this->t('When the slider does not have any value by enabling this option it won\'t show the the slider handle unless user clicks on the slider to select a value.'),
-      '#default_value' => $settings['sliderfield_settings']['hide_slider_handle_when_no_value']
+      '#default_value' => $settings['sliderfield_settings']['hide_slider_handle_when_no_value'],
     ];
 
     return $elements;
@@ -241,10 +242,11 @@ class SliderUIFieldWidget extends WidgetBase {
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $field_settings = $this->getFieldSettings();
+    $settings = $this->getSettings()['sliderfield_settings'];
 
     // Set minimum and maximum.
     if (is_numeric($field_settings['min'])) {
-      $element['#min'] = $field_settings['min'];
+      $element['#min'] = $field_settings['min'] - $settings['step'];
     }
     if (is_numeric($field_settings['max'])) {
       $element['#max'] = $field_settings['max'];
@@ -260,14 +262,12 @@ class SliderUIFieldWidget extends WidgetBase {
       $element['#field_suffix'] = FieldFilteredMarkup::create(array_pop($suffixes));
     }
 
-
-    $settings = $this->getSettings()['sliderfield_settings'];
     $value = NULL;
     if (!empty($items) && isset($items[$delta]) && isset($items[$delta]->value)) {
       $value = $items[$delta]->value;
     }
     else {
-      $value = $field_settings['min'];
+      $value = $field_settings['min'] - $settings['step'];
     }
     if (!isset($settings['display_values_format'])) {
       $settings['display_values_format'] = '%{value}%';
@@ -294,17 +294,34 @@ class SliderUIFieldWidget extends WidgetBase {
       '#display_inputs' => !$settings['hide_inputs'],
       '#display_values' => $settings['display_values'],
       '#display_values_format' => $settings['display_values_format'],
+      '#not_selected_text' => $this->t(Html::escape($settings['not_selected_text'])),
       '#slider_length' => $settings['slider_length'],
       '#display_inside_fieldset' => FALSE,
       '#validate_range' => FALSE,
       '#display_bubble' => $settings['display_bubble'],
       '#display_bubble_format' => $settings['display_bubble_format'],
-      '#display_ignore_button' => $settings['display_ignore_button'],
       '#hide_slider_handle_when_no_value' => $settings['hide_slider_handle_when_no_value'],
       '#fields_to_sync_css_selector' => @$settings['fields_to_sync_css_selector'],
     );
 
     return ['value' => $element];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
+    $field_settings = $this->getFieldSettings();
+    $settings = $this->getSettings()['sliderfield_settings'];
+    $min_value = $field_settings['min'] - $settings['step'];
+
+    foreach ($values as &$value) {
+      if ($min_value == $value['value']) {
+        $value = NULL;
+      }
+    }
+
+    return parent::massageFormValues($values, $form, $form_state);
   }
 
 }

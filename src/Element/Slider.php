@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\sliderfield\Element;
+namespace Drupal\sliderwidget\Element;
 
 use Drupal\Core\Render\Element\FormElement;
 use Drupal\Core\Form\FormStateInterface;
@@ -257,7 +257,7 @@ class Slider extends FormElement {
 
     $_attributes_new = [
       'class' => [
-        'sliderfield-value-field',
+        'sliderwidget-value-field',
       ],
     ];
     if (isset($element['#attributes']) && is_array($element['#attributes'])) {
@@ -266,14 +266,14 @@ class Slider extends FormElement {
     // Generate input for slider
     $element['slider']['value'] = [
       '#tree' => TRUE,
-      '#prefix' => '<div id="' . $element['#id'] . '" class="sliderfield ' . $group_css . '">' . '<div class="sliderfield-event-field-container">',
+      '#prefix' => '<div id="' . $element['#id'] . '" class="sliderwidget ' . $group_css . '">' . '<div class="sliderwidget-event-field-container">',
       '#suffix' => '</div>',
       '#type' => 'number',
       '#max' => $element['#max'] * 1,
       '#min' => $element['#min'] * 1,
       '#step' => $element['#step'] * 1,
       '#required' => $element['#required'],
-      '#element_validate' => ['Drupal\sliderfield\Element\Slider', 'sliderValidatePositiveNumber'],
+      '#element_validate' => ['Drupal\sliderwidget\Element\Slider', 'sliderValidatePositiveNumber'],
       '#title' => $element['#input_title'],
       '#value' => $value,
       '#disabled' => $element['#disabled'],
@@ -310,7 +310,7 @@ class Slider extends FormElement {
         $values[$key] = str_replace('%{value}%', $value ,$element['#display_values_format']);
       }
       $element['slider']['values_text'] = [
-        '#markup' => '<div class="sliderfield-display-values-field">' . htmlentities(implode(' - ',  $values)) . '</div>'
+        '#markup' => '<div class="sliderwidget-display-values-field">' . htmlentities(implode(' - ',  $values)) . '</div>'
       ];
     }
 
@@ -326,7 +326,7 @@ class Slider extends FormElement {
     if ($element['#hide_slider_handle_when_no_value']) {
       $element['slider']['note'] = array(
         '#type' => 'markup',
-        '#markup' => '<div class="sliderfield-selectvalue-description">' . t('Please click on any part of the slider to select a value') . '</div>'
+        '#markup' => '<div class="sliderwidget-selectvalue-description">' . t('Please click on any part of the slider to select a value') . '</div>'
       );
     }
 
@@ -335,17 +335,17 @@ class Slider extends FormElement {
       '#type' => 'container',
       '#attributes' => [
         'class' => [
-          'sliderfield-container',
+          'sliderwidget-container',
           $element['#slider_style']
         ],
         'style' => $style
       ],
       '#attached' => [
         'library' => [
-          'sliderfield/element.slider'
+          'sliderwidget/element.slider'
         ],
         'drupalSettings' => [
-          'sliderfield_' . $element['#id'] => [
+          'sliderwidget_' . $element['#id'] => [
             'animate' => $element['#animate'],
             'adjust_field_min_css_selector' => $element['#adjust_field_min'],
             'adjust_field_max_css_selector' => $element['#adjust_field_max'],

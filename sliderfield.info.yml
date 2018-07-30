@@ -1,5 +1,0 @@
-name: Slider field
-type: module
-description: Slider UI field
-core: 8.x
-package: Fields

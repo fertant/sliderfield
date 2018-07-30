@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains sliderfield.module.
+ * Contains sliderwidget.module.
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -10,10 +10,10 @@ use Drupal\Core\Routing\RouteMatchInterface;
 /**
  * Implements hook_help().
  */
-function sliderfield_help($route_name, RouteMatchInterface $route_match) {
+function sliderwidget_help($route_name, RouteMatchInterface $route_match) {
   switch ($route_name) {
-    // Main module help for the sliderfield module.
-    case 'help.page.sliderfield':
+    // Main module help for the sliderwidget module.
+    case 'help.page.sliderwidget':
       $output = '';
       $output .= '<h3>' . t('About') . '</h3>';
       $output .= '<p>' . t('Slider UI field') . '</p>';
@@ -26,7 +26,7 @@ function sliderfield_help($route_name, RouteMatchInterface $route_match) {
 /**
  * Implements hook_theme().
  */
-function sliderfield_theme() {
+function sliderwidget_theme() {
   return [
     'slider_sliderelement' => [
       'render element' => 'elements',
@@ -43,6 +43,6 @@ function sliderfield_theme() {
  *   An associative array containing:
  *   - elements: An array of elements to display in view mode.
  */
-function sliderfield_preprocess_slider_sliderelement(&$variables) {
+function sliderwidget_preprocess_slider_sliderelement(&$variables) {
   $variables['slider'] = $variables['elements']['slider'];
 }

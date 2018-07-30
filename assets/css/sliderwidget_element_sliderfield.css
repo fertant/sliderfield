@@ -19,13 +19,13 @@
 .ui-slider.laurel-green .ui-slider-range { background: #B5CA92; }
 .ui-slider.laurel-green .ui-slider-handle { border-color: #B5CA92; }
 
-.sliderfield .sliderfield-event-field-container, .sliderfield .sliderfield-event-field-container div, .sliderfield .sliderfield-event-field-container .form-item {
+.sliderwidget .sliderwidget-event-field-container, .sliderwidget .sliderwidget-event-field-container div, .sliderwidget .sliderwidget-event-field-container .form-item {
   display: inline;
   padding: 0px;
   margin: 0px;
 }
 
-.sliderfield .sliderfield-bubble{
+.sliderwidget .sliderwidget-bubble{
   position: relative;
   top: -32px;
   color: black;
@@ -38,6 +38,6 @@
   border-radius: 3px;
 }
 
-.sliderfield {
+.sliderwidget {
   margin-top: 35px;
 }

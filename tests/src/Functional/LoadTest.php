@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\sliderfield\Functional;
+namespace Drupal\Tests\sliderwidget\Functional;
 
 use Drupal\Core\Url;
 use Drupal\Tests\BrowserTestBase;
@@ -8,7 +8,7 @@ use Drupal\Tests\BrowserTestBase;
 /**
  * Simple test to ensure that main page loads with module enabled.
  *
- * @group sliderfield
+ * @group sliderwidget
  */
 class LoadTest extends BrowserTestBase {
 
@@ -17,7 +17,7 @@ class LoadTest extends BrowserTestBase {
    *
    * @var array
    */
-  public static $modules = ['sliderfield'];
+  public static $modules = ['sliderwidget'];
 
   /**
    * A user with permission to administer site configuration.
